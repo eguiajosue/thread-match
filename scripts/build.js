@@ -1,6 +1,7 @@
 const fs=require('fs'),path=require('path'),vm=require('vm');const root=path.resolve(__dirname,'..');
+require('./build-thread-icon');
 const version=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version;
-const files=['color/convert.js','color/deltaE2000.js','matching/matcher.js','color/references.js','color/measured.js','design/palette.js','illustrator/selection.js','illustrator/swatches.js','illustrator/transaction.js','illustrator/labels.js','ui/matcherDialog.js'];
+const files=['color/convert.js','color/deltaE2000.js','matching/matcher.js','color/references.js','color/measured.js','design/palette.js','illustrator/selection.js','illustrator/swatches.js','illustrator/transaction.js','illustrator/threadIconData.js','illustrator/threadIcon.js','illustrator/labels.js','ui/matcherDialog.js'];
 const core=files.slice(0,6).map(f=>fs.readFileSync(path.join(root,'src',f),'utf8')).join('\n');
 const context={};vm.createContext(context);vm.runInContext(core,context);
 const cat=JSON.parse(fs.readFileSync(path.join(root,'data/madeira-polystitch.json'),'utf8'));

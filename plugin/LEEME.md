@@ -47,3 +47,7 @@ El desplegable superior permite elegir Carta PDF o Montaje. Carta PDF conserva l
 Hilos > Diseño prepara toda la paleta. Revisa cada asignación antes de Aplicar, Leyenda o ambas. Más (⚙) ofrece alcances, paletas, disponibilidad, JSON, CSV/SVG y recuperación. Más > Versión consulta manualmente Releases; el trabajo diario no requiere conexión.
 
 El instalador verifica `INTEGRITY.sha256` y conserva una versión anterior. Con Illustrator cerrado ejecuta `Restaurar-version-anterior.bat` (Windows) o `bash Restaurar-version-anterior.command` (macOS) para intercambiarlas; conserva opciones y favoritos. Los hashes detectan corrupción, no sustituyen una firma certificada. La validación nativa sigue pendiente.
+
+## Tipos de etiqueta · 0.8.0
+
+En Etiqueta selecciona Clásica o Icono de hilo. La vista Icono usa el SVG original con nombre y código al lado, sin fondo; su blanco toma el color del hilo y sus detalles negros/grises se conservan. El tipo elegido se recuerda y funciona también con doble clic y Enter.

@@ -10,7 +10,15 @@ for(const size of [{width:300,height:420},{width:340,height:480}]){
  await noScroll();await page.screenshot({path:path.join(screens,'threads-'+size.width+'.png')});
  const before=await page.evaluate(()=>uiCalls.filter(s=>/,"label"(?:,|\))/.test(s)).length);await page.locator('#matches .match').nth(2).dblclick();await page.waitForFunction(before=>uiCalls.filter(s=>/,"label"(?:,|\))/.test(s)).length===before+1,before);assert.equal(await page.evaluate(()=>uiCalls.filter(s=>/,"label"(?:,|\))/.test(s)).length),before+1);
  await page.selectOption('#colors','1');assert.equal(await page.locator('#rgb').textContent(),'RGB 233 / 33 / 120');
- await page.click('#tab-label');await noScroll();await page.screenshot({path:path.join(screens,'label-'+size.width+'.png')});await page.click('#tab-threads');
+ await page.click('#tab-label');await noScroll();await page.screenshot({path:path.join(screens,'label-'+size.width+'.png')});
+ await page.selectOption('#label-template','spool');await noScroll();assert.equal(await page.locator('#preview-spool').isVisible(),true);
+ assert.equal(await page.locator('#preview-spool path').count(),5);
+ assert.equal(await page.locator('#preview-spool path').nth(2).evaluate(el=>getComputedStyle(el).fill),'rgb(173, 173, 173)');
+ assert.equal(await page.locator('#preview-spool path').nth(1).evaluate(el=>getComputedStyle(el).fill),'rgb(0, 0, 0)');
+ await page.click('#label-preview-create');await page.waitForFunction(()=>uiCalls.some(s=>s.includes('.act(')&&s.includes('"template":"spool"')));
+ await page.screenshot({path:path.join(screens,'label-spool-'+size.width+'.png')});
+ await page.reload();await page.waitForSelector('#matches .match');await page.click('#tab-label');assert.equal(await page.locator('#label-template').inputValue(),'spool');await noScroll();
+ await page.selectOption('#label-template','classic');assert.equal(await page.locator('#preview-spool').isVisible(),false);await page.click('#tab-threads');
  await page.evaluate(()=>{window.nextScan={...currentScan,token:2,groups:[{...currentScan.groups[0],rgb:{r:1,g:2,b:3},hex:'#010203'}]};});await page.waitForFunction(()=>document.querySelector('#rgb').textContent==='RGB 1 / 2 / 3');
  await page.click('#tab-search');assert.equal(await page.locator('#catalog-results .match').count(),5);await noScroll();
  await page.click('#next-page');assert.ok((await page.locator('#search-count').textContent()).includes('2 / 32'));
@@ -25,7 +33,7 @@ for(const size of [{width:300,height:420},{width:340,height:480}]){
  await page.selectOption('#reference','montage');await page.waitForFunction(()=>uiCalls.some(s=>s.startsWith('ThreadMatchCEP.scan("montage",')));
  await page.waitForFunction(()=>!document.querySelector('#search-label').disabled);
  assert.equal(await page.locator('#catalog-results .chip').evaluate(el=>el.style.backgroundColor),'rgb(255, 255, 255)');
- assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(255, 255, 255)');await noScroll();
+ assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(255, 255, 255)');assert.equal(await page.locator('#preview-spool').evaluate(el=>el.style.color),'rgb(255, 255, 255)');await noScroll();
  await page.screenshot({path:path.join(screens,'white-montage-'+size.width+'.png')});
  await page.click('#tab-label');await noScroll();await page.screenshot({path:path.join(screens,'white-label-'+size.width+'.png')});
  await page.selectOption('#reference','pdf');await page.waitForFunction(()=>!document.querySelector('#label-preview-create').disabled);

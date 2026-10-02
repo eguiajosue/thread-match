@@ -1,0 +1,10 @@
+const fs=require('fs'),path=require('path'),{contours}=require('./svg-path');
+const root=path.resolve(__dirname,'..'),source=fs.readFileSync(path.join(root,'assets/THREAD.svg'),'utf8');
+const viewBox=/viewBox="([^"]+)"/.exec(source)[1].split(/\s+/).map(Number);
+const paths=Array.from(source.matchAll(/<path\b([^>]+)\/>/g),m=>{const d=/\bd="([^"]+)"/.exec(m[1])[1],cls=/\bclass="([^"]+)"/.exec(m[1]);return {role:cls&&cls[1]==='cls-1'?'thread':'fixed',rgb:cls&&cls[1]==='cls-2'?[173,173,173]:[0,0,0],d,contours:contours(d)};});
+if(paths.length!==5||paths.filter(p=>p.role==='thread').length!==1)throw Error('Unexpected THREAD.svg structure');
+const runtime={viewBox,paths:paths.map(({d,...p})=>p)};
+fs.writeFileSync(path.join(root,'src/illustrator/threadIconData.js'),'/* Generated from assets/THREAD.svg; keep source vector unchanged. */\nThreadMatch.THREAD_ICON='+JSON.stringify(runtime)+';\n');
+const preview='<svg id="preview-spool" xmlns="http://www.w3.org/2000/svg" viewBox="'+viewBox.join(' ')+'" aria-hidden="true">'+paths.map(p=>'<path fill="'+(p.role==='thread'?'currentColor':p.rgb[0]===173?'#adadad':'#000')+'" d="'+p.d+'"/>').join('')+'</svg>';
+const htmlPath=path.join(root,'plugin/com.threadmatch.illustrator/index.html');let html=fs.readFileSync(htmlPath,'utf8');html=html.replace(/<!-- thread-icon:start -->[\s\S]*?<!-- thread-icon:end -->/,'<!-- thread-icon:start -->'+preview+'<!-- thread-icon:end -->');fs.writeFileSync(htmlPath,html);
+console.log('Built supplied thread vector: '+paths.length+' shapes, '+paths.reduce((n,p)=>n+p.contours.length,0)+' contours');

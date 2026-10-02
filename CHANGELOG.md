@@ -1,3 +1,11 @@
+# 0.8.0 · piloto
+
+- Selector de etiqueta Clásica / Icono de hilo con vista previa y preferencia persistente.
+- Usa el THREAD.svg proporcionado como vector editable, con nombre y código a la derecha y fondo transparente.
+- Cambia únicamente el blanco del icono al color del hilo; conserva negro, gris, curvas y perforaciones del original.
+- La elección se aplica a todos los botones de etiqueta, doble clic y Enter; los respaldos anteriores conservan Clásica.
+- Verifica los 36 contornos vectoriales y ambos formatos en el panel compacto. La validación de carga nativa en Illustrator continúa pendiente.
+
 # 0.7.3 · piloto
 
 - Los botones de importación/exportación esperan la respuesta del puente CEP, evitando perder acciones durante una lectura automática.

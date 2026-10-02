@@ -2,9 +2,9 @@
 
 Panel acoplable para Adobe Illustrator 2025/2026 que encuentra los hilos Madeira Polystitch No. 40 más cercanos a los colores de un diseño.
 
-## Piloto 0.7.3
+## Piloto 0.8.0
 
-Modo Diseño, paletas por lote, leyendas, recientes, paletas guardadas, disponibilidad manual, importación/exportación y diagnóstico. Consulta [cómo usarlo y las limitaciones](docs/IMPLEMENTACION_0.7.md). La [versión piloto](https://github.com/eguiajosue/thread-match/releases/tag/v0.7.3) requiere validación en Illustrator; la última estable sigue en Releases/latest.
+Modo Diseño, paletas por lote, leyendas, recientes, paletas guardadas, disponibilidad manual, importación/exportación y diagnóstico. Consulta [cómo usarlo y las limitaciones](docs/IMPLEMENTACION_0.7.md). La [versión piloto](https://github.com/eguiajosue/thread-match/releases/tag/v0.8.0) requiere validación en Illustrator; la última estable sigue en Releases/latest.
 
 ## Descargar e instalar
 
@@ -97,3 +97,7 @@ En la pestaña **Buscar**, escribe el código (con o sin #) o parte del nombre. 
 ### Favoritos
 
 Marca la estrella ☆ de un hilo en Hilos o Buscar para guardarlo. La pestaña **Favoritos** muestra los hilos guardados en páginas de cinco; permite elegirlos, aplicarlos o crear su etiqueta con doble clic o Enter. Pulsa ★ para quitar un favorito. Se guardan por código en este equipo y se conservan al cerrar el panel. Al cambiar entre Carta PDF y Montaje, se mantiene la lista y se muestran los colores de la referencia activa. No hay sincronización entre equipos. Si el almacenamiento local no está disponible, el panel avisa que los cambios durarán solo durante la sesión.
+
+### Tipo de etiqueta
+
+En **Etiqueta > Tipo de etiqueta** elige **Clásica** (tarjeta actual) o **Icono de hilo** (rollo vectorial a la izquierda, nombre y código negros a la derecha, sin fondo). La elección se guarda y se aplica también al doble clic desde Hilos, Buscar y Favoritos. Solo las partes blancas del SVG cambian al color de la referencia activa; negro y gris originales se conservan. Las leyendas de producción mantienen su formato.

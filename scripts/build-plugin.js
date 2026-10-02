@@ -1,5 +1,5 @@
 const fs=require('fs'),path=require('path');const root=path.resolve(__dirname,'..');
-const names=['color/convert.js','color/deltaE2000.js','matching/matcher.js','color/references.js','color/measured.js','design/palette.js','illustrator/selection.js','illustrator/swatches.js','illustrator/transaction.js','illustrator/labels.js'];
+const names=['color/convert.js','color/deltaE2000.js','matching/matcher.js','color/references.js','color/measured.js','design/palette.js','illustrator/selection.js','illustrator/swatches.js','illustrator/transaction.js','illustrator/threadIconData.js','illustrator/threadIcon.js','illustrator/labels.js'];
 const version=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version;
 const manifestPath=path.join(root,'plugin/com.threadmatch.illustrator/CSXS/manifest.xml');
 const manifest=fs.readFileSync(manifestPath,'utf8').replace(/ExtensionBundleVersion="[^"]+"/,'ExtensionBundleVersion="'+version+'"').replace(/(<Extension Id="com.threadmatch.illustrator.panel" Version=")[^"]+/,'$1'+version);
