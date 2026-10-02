@@ -94,7 +94,7 @@ for(const size of [{width:300,height:420},{width:340,height:480}]){
  await page.evaluate(()=>{window.watchError='Selecciona uno o varios objetos con relleno sólido.';});
  await page.waitForFunction(()=>document.querySelector('#colors').textContent==='Selecciona un objeto');
  await page.waitForFunction(()=>!document.querySelector('#export-diagnostics').disabled);
- await page.evaluate(()=>{window.pollMutations=[];pollObserver.observe(document.querySelector('main'),{subtree:true,attributes:true,childList:true});window.pollStart=uiCalls.filter(s=>s.includes('.watch(')).length;});
+ await page.evaluate(()=>{window.pollMutations=[];window.pollObserver=new MutationObserver(records=>pollMutations.push(...records.map(r=>({type:r.type,attr:r.attributeName}))));pollObserver.observe(document.querySelector('main'),{subtree:true,attributes:true,childList:true});window.pollStart=uiCalls.filter(s=>s.includes('.watch(')).length;});
  await page.waitForFunction(()=>uiCalls.filter(s=>s.includes('.watch(')).length>=pollStart+2);
  await page.waitForTimeout(40);
  assert.deepEqual(await page.evaluate(()=>{pollObserver.disconnect();return pollMutations;}),[],'Repeated empty selection must not rebuild or flash the panel');
