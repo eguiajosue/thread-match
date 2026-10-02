@@ -4,10 +4,27 @@ for(const size of [{width:300,height:420},{width:340,height:480}]){
  const page=await browser.newPage({viewport:size}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  const group=rgb=>({hex:T.rgbToHex(rgb),rgb,count:2,matches:T.findClosestMadeiraColors(rgb,5).map(r=>({code:r.code,name:r.name,hex:r.thread.hex,deltaE:r.deltaE,description:T.matchDescription(r.deltaE)}))});
  const data={ok:true,documentId:1,reference:'pdf',scope:'selection',context:{mode:'RGB',profile:'No expuesto'},token:1,groups:[group({r:22,g:87,b:171}),group({r:233,g:33,b:120})],skipped:0};
- await page.addInitScript(data=>{window.uiCalls=[];window.currentScan=data;window.__adobe_cep__={evalScript(script,callback){window.uiCalls.push(script);let result;if(script.includes('.scan(')){window.currentScan={...window.currentScan,reference:JSON.parse(script.slice(script.indexOf('(')+1).split(',')[0])};result=window.currentScan;}else if(script.includes('.watch(')){result=window.nextScan||{ok:true,unchanged:true};if(window.nextScan)window.currentScan=window.nextScan;window.nextScan=null;}else if(script.includes('.health('))result={ok:true,recoverable:true};else if(script.includes('.batch('))result={ok:true,recoverable:true};else if(script.includes('.saveFile('))result={ok:true};else if(script.includes('.reduce('))result={ok:true,assignments:window.reducedAssignments};else result={ok:true,code:'5990',action:'label'};setTimeout(()=>callback(JSON.stringify(result)),10);}};},data);
+ await page.addInitScript(data=>{window.uiCalls=[];window.currentScan=data;window.__adobe_cep__={evalScript(script,callback){window.uiCalls.push(script);let result;if(script.includes('.scan(')){window.currentScan={...window.currentScan,reference:JSON.parse(script.slice(script.indexOf('(')+1).split(',')[0])};result=window.currentScan;}else if(script.includes('.watch(')){result=window.watchError?{ok:false,error:window.watchError}:window.nextScan||{ok:true,unchanged:true};if(window.nextScan)window.currentScan=window.nextScan;window.nextScan=null;}else if(script.includes('.health('))result={ok:true,recoverable:true};else if(script.includes('.batch('))result={ok:true,recoverable:true};else if(script.includes('.saveFile('))result={ok:true};else if(script.includes('.reduce('))result={ok:true,assignments:window.reducedAssignments};else result={ok:true,code:'5990',action:'label'};if(script.includes('.watch(')&&window.holdWatch){window.releaseWatch=()=>{window.holdWatch=false;window.releaseWatch=null;callback(JSON.stringify(result));};return;}setTimeout(()=>callback(JSON.stringify(result)),10);}};},data);
  await page.goto('file://'+path.resolve('plugin/com.threadmatch.illustrator/index.html'));await page.waitForSelector('.match');assert.equal(await page.locator('#matches .match').count(),5);
  async function noScroll(){assert.ok(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight&&document.documentElement.scrollWidth<=innerWidth),'Panel overflows at '+JSON.stringify(size));}
  await noScroll();await page.screenshot({path:path.join(screens,'threads-'+size.width+'.png')});
+ // Unchanged automatic reads leave controls, rows and focus untouched.
+ await page.locator('#matches input').first().focus();
+ await page.evaluate(()=>{window.pollMutations=[];window.pollObserver=new MutationObserver(records=>pollMutations.push(...records.map(r=>({type:r.type,attr:r.attributeName}))));pollObserver.observe(document.querySelector('main'),{subtree:true,attributes:true,childList:true});window.pollStart=uiCalls.filter(s=>s.includes('.watch(')).length;});
+ await page.waitForFunction(()=>uiCalls.filter(s=>s.includes('.watch(')).length>=pollStart+2);
+ await page.waitForTimeout(40);
+ assert.deepEqual(await page.evaluate(()=>{pollObserver.disconnect();return pollMutations;}),[],'Unchanged watch must not mutate the visible panel');
+ assert.equal(await page.locator('#matches input').first().evaluate(el=>document.activeElement===el),true);
+ // A click during a slow background read is queued once, then executed.
+ const queuedBefore=await page.evaluate(()=>{window.holdWatch=true;return uiCalls.filter(s=>/,'label'/.test(s.replace(/"/g,"'"))).length;});
+ await page.waitForFunction(()=>!!window.releaseWatch);
+ assert.equal(await page.locator('#label').isDisabled(),false);
+ await page.click('#label');
+ assert.equal(await page.evaluate(()=>uiCalls.filter(s=>/,'label'/.test(s.replace(/"/g,"'"))).length),queuedBefore);
+ await page.evaluate(()=>releaseWatch());
+ await page.waitForFunction(before=>uiCalls.filter(s=>/,'label'/.test(s.replace(/"/g,"'"))).length===before+1,queuedBefore);
+ await page.waitForFunction(()=>!document.querySelector('#label').disabled);
+
  const before=await page.evaluate(()=>uiCalls.filter(s=>/,"label"(?:,|\))/.test(s)).length);await page.locator('#matches .match').nth(2).dblclick();await page.waitForFunction(before=>uiCalls.filter(s=>/,"label"(?:,|\))/.test(s)).length===before+1,before);assert.equal(await page.evaluate(()=>uiCalls.filter(s=>/,"label"(?:,|\))/.test(s)).length),before+1);
  await page.selectOption('#colors','1');assert.equal(await page.locator('#rgb').textContent(),'RGB 233 / 33 / 120');
  await page.click('#tab-label');await noScroll();await page.screenshot({path:path.join(screens,'label-'+size.width+'.png')});
@@ -71,6 +88,16 @@ for(const size of [{width:300,height:420},{width:340,height:480}]){
  await page.click('#settings');for(const option of ['scope','palettes','availability','files','updates','diagnostics']){await page.selectOption('#settings-page',option);await noScroll();await page.screenshot({path:path.join(screens,'settings-'+option+'-'+size.width+'.png')});}
  await page.click('#health');await page.waitForFunction(()=>uiCalls.some(s=>s.includes('.health(')));await page.waitForFunction(()=>!document.querySelector('#scan').disabled);
  await page.click('#export-diagnostics');await page.waitForFunction(()=>uiCalls.some(s=>s.includes('.saveFile(')));
+
+ await page.click('#tab-threads');
+ // Repeated empty-selection responses render the empty state only once.
+ await page.evaluate(()=>{window.watchError='Selecciona uno o varios objetos con relleno sólido.';});
+ await page.waitForFunction(()=>document.querySelector('#colors').textContent==='Selecciona un objeto');
+ await page.waitForFunction(()=>!document.querySelector('#export-diagnostics').disabled);
+ await page.evaluate(()=>{window.pollMutations=[];pollObserver.observe(document.querySelector('main'),{subtree:true,attributes:true,childList:true});window.pollStart=uiCalls.filter(s=>s.includes('.watch(')).length;});
+ await page.waitForFunction(()=>uiCalls.filter(s=>s.includes('.watch(')).length>=pollStart+2);
+ await page.waitForTimeout(40);
+ assert.deepEqual(await page.evaluate(()=>{pollObserver.disconnect();return pollMutations;}),[],'Repeated empty selection must not rebuild or flash the panel');
  assert.equal(errors.length,0);await page.close();
 }
-await browser.close();console.log('Browser UI checks passed: no scroll, double click, color change, automatic selection, PDF/montage whites, persistent favorites, pagination and star isolation.');})().catch(e=>{console.error(e);process.exit(1);});
+await browser.close();console.log('Browser UI checks passed: no scroll, double click, color change, automatic selection, PDF/montage whites, persistent favorites, pagination, star isolation, silent background polling and queued actions.');})().catch(e=>{console.error(e);process.exit(1);});

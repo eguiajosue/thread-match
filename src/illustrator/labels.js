@@ -1,7 +1,28 @@
 (function(T){
  T.LABEL_STYLE={width:180,padding:12,swatchHeight:54,nameSize:22,codeSize:20,gap:8,artworkGap:18};
  T.labelOptions=function(options){options=options||{};var c={},k;for(k in T.LABEL_STYLE)c[k]=T.LABEL_STYLE[k];function number(name,min,max){var v=options[name];if(v===undefined)return null;if(typeof v!=='number'||!isFinite(v)||v<min||v>max)throw Error('Medida inválida: '+name);return v;}var width=number('widthMm',35,140),gap=number('gapMm',1,30),size=number('fontPt',8,36),columns=number('columns',1,4);if(width!==null)c.width=width*72/25.4;if(gap!==null)c.artworkGap=gap*72/25.4;if(size!==null){c.nameSize=size;c.codeSize=size*.9;}c.columns=columns===null?2:Math.floor(columns);c.template=options.template||'classic';if(c.template!=='classic'&&c.template!=='spool')throw Error('Tipo de etiqueta inválido.');c.placement=options.placement||'below';if(c.placement!=='below'&&c.placement!=='artboard')throw Error('Posición de etiqueta inválida.');return c;};
- T.productionLayer=function(doc){if(!doc.layers||!doc.layers.add)return null;var layer=null;try{layer=doc.layers.getByName('ThreadMatch · Producción');}catch(ignore){}if(layer&&(layer.locked||layer.visible===false))throw Error('Desbloquea y muestra la capa ThreadMatch · Producción.');if(!layer){layer=doc.layers.add();layer.name='ThreadMatch · Producción';}return layer;};
+ T.outputIsolated=function(doc){
+  function isolated(item){var steps=0;while(item&&item.typename!=='Document'&&steps++<100){try{if(item.isIsolated)return true;item=item.parent;}catch(ignore){break;}}return false;}
+  try{if(isolated(doc.activeLayer)||doc.activeLayer&&doc.activeLayer.name==='Isolation Mode')return true;}catch(ignoreLayer){}
+  var selection=doc.selection;for(var i=0;selection&&i<selection.length;i++)if(isolated(selection[i]))return true;return false;
+ };
+ T.productionLayer=function(doc){
+  if(!doc.layers||!doc.layers.add)return null;var layer=null,exits=0;
+  function leaveIsolation(){
+   var message='Sal del modo de aislamiento con Esc y vuelve a crear la etiqueta o leyenda.';
+   if(exits++>=32||typeof app.executeMenuCommand!=='function')throw Error(message);
+   var selected=[],input=doc.selection,i;for(i=0;input&&i<input.length;i++)selected.push(input[i]);
+   var failed=false;try{app.executeMenuCommand('exitFocus');}catch(e){failed=true;}
+   try{var current=doc.selection,changed=!current||current.length!==selected.length;if(!changed)for(i=0;i<selected.length;i++)if(current[i]!==selected[i]){changed=true;break;}if(changed)doc.selection=selected;}catch(restoreError){failed=true;}
+   if(failed)throw Error(message);
+  }
+  while(T.outputIsolated(doc))leaveIsolation();
+  // Some hosts expose the synthetic layer only through this native error.
+  while(true){
+   try{layer=null;try{layer=doc.layers.getByName('ThreadMatch · Producción');}catch(ignore){}if(layer&&(layer.locked||layer.visible===false))throw Error('Desbloquea y muestra la capa ThreadMatch · Producción.');if(!layer){layer=doc.layers.add();layer.name='ThreadMatch · Producción';}return layer;}
+   catch(e){if(!/synthetic layer|Isolation Mode/i.test(e.message||''))throw e;leaveIsolation();while(T.outputIsolated(doc))leaveIsolation();}
+  }
+ };
  T.outputGroup=function(doc){var layer=T.productionLayer(doc);return layer&&layer.groupItems?layer.groupItems.add():doc.groupItems.add();};
  T.createThreadLabel=function(doc,bucket,thread,options){
   var b=T.artworkBounds?T.artworkBounds(doc,bucket.allBuckets||[bucket]):bucket.targets[0].item.geometricBounds,cfg=T.labelOptions(options),left=b[0],top=b[3]-cfg.artworkGap,inner=cfg.width-2*cfg.padding;

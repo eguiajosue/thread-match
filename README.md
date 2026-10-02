@@ -2,9 +2,9 @@
 
 Panel acoplable para Adobe Illustrator 2025/2026 que encuentra los hilos Madeira Polystitch No. 40 más cercanos a los colores de un diseño.
 
-## Piloto 0.8.0
+## Piloto 0.8.1
 
-Modo Diseño, paletas por lote, leyendas, recientes, paletas guardadas, disponibilidad manual, importación/exportación y diagnóstico. Consulta [cómo usarlo y las limitaciones](docs/IMPLEMENTACION_0.7.md). La [versión piloto](https://github.com/eguiajosue/thread-match/releases/tag/v0.8.0) requiere validación en Illustrator; la última estable sigue en Releases/latest.
+Modo Diseño, paletas por lote, leyendas, recientes, paletas guardadas, disponibilidad manual, importación/exportación y diagnóstico. Consulta [cómo usarlo y las limitaciones](docs/IMPLEMENTACION_0.7.md). La [versión piloto](https://github.com/eguiajosue/thread-match/releases/tag/v0.8.1) requiere validación en Illustrator; la última estable sigue en Releases/latest.
 
 ## Descargar e instalar
 

@@ -1,3 +1,11 @@
+# 0.8.1 · piloto
+
+- Etiquetas y leyendas salen del modo de aislamiento antes de crear la capa de producción, conservando los objetos seleccionados; contempla aislamiento anidado y el error de capa sintética.
+- Si Illustrator no admite salir del aislamiento por script, indica pulsar Esc y reintentar, sin crear una etiqueta parcial.
+- Las consultas automáticas sin cambios dejan intactos los controles y las filas; elimina la atenuación periódica y conserva el foco.
+- Los clics durante una consulta automática esperan su respuesta y se ejecutan una sola vez; las escrituras siguen bloqueadas durante operaciones explícitas.
+- Una selección vacía persistente no reconstruye el panel cada vez. Pruebas de regresión de aislamiento, parpadeo y acciones en espera. Validación nativa en Illustrator pendiente.
+
 # 0.8.0 · piloto
 
 - Selector de etiqueta Clásica / Icono de hilo con vista previa y preferencia persistente.

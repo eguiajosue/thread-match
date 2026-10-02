@@ -51,3 +51,7 @@ El instalador verifica `INTEGRITY.sha256` y conserva una versión anterior. Con 
 ## Tipos de etiqueta · 0.8.0
 
 En Etiqueta selecciona Clásica o Icono de hilo. La vista Icono usa el SVG original con nombre y código al lado, sin fondo; su blanco toma el color del hilo y sus detalles negros/grises se conservan. El tipo elegido se recuerda y funciona también con doble clic y Enter.
+
+## Corrección de aislamiento y refresco · 0.8.1
+
+Al crear una etiqueta o leyenda desde un objeto aislado, ThreadMatch sale del modo de aislamiento y conserva los objetos seleccionados para colocar la salida en la capa de producción. Si la versión de Illustrator impide esa salida por script, pulsa Esc hasta salir del aislamiento y vuelve a crear la etiqueta. La consulta automática conserva los controles y el foco cuando no cambia la selección; un clic durante esa consulta espera su respuesta.
