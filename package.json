@@ -1,6 +1,6 @@
 {
   "name": "threadmatch",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "description": "Madeira Polystitch matcher for Illustrator",
   "scripts": {
@@ -10,5 +10,6 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "releaseChannel": "pilot"
 }

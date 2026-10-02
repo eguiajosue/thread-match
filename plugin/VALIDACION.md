@@ -9,3 +9,7 @@ GitHub Actions prueba instalación, reinstalación y desinstalación en runners 
 ## Pendiente en Illustrator real
 
 Carga CEP, acoplamiento, perfiles CMYK, selección en grupos/texto real, fuente Arial en ambos sistemas, formato final de etiquetas, Ctrl+Z/rehacer, comportamiento al cerrar documentos y selección cambiada durante una acción. Las capturas del navegador no representan una prueba dentro de Illustrator.
+
+## Piloto 0.7.0
+
+Incluye modo Diseño, reducción, recuperación y preferencias. El banco y matriz de validación nativa están en el repositorio: `scripts/validate-illustrator.jsx` y `docs/validation/MATRIZ_NATIVA.md`. La entrega permanece piloto hasta ejecutar esa matriz. Los objetivos de tiempo del plan no se presentan como mediciones reales.

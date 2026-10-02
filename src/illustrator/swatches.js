@@ -1,20 +1,21 @@
 (function(T){
  T.threadRGBColor=function(thread){var c=new RGBColor();c.red=thread.rgb.r;c.green=thread.rgb.g;c.blue=thread.rgb.b;return c;};
+ T.threadDocumentColor=function(doc,thread){var rgb=T.threadRGBColor(thread);if(typeof DocumentColorSpace!=='undefined'&&doc.documentColorSpace===DocumentColorSpace.CMYK){var v=app.convertSampleColor(ImageColorSpace.RGB,[thread.rgb.r,thread.rgb.g,thread.rgb.b],ImageColorSpace.CMYK,ColorConvertPurpose.defaultpurpose),c=new CMYKColor();c.cyan=v[0];c.magenta=v[1];c.yellow=v[2];c.black=v[3];return c;}return rgb;};
  T.getThreadSwatch=function(doc,thread){
-  var name=thread.code+' · '+thread.name+(thread.referenceMode==='montage'?' · montaje':''),i,s,spot;
+  var name=thread.code+' · '+thread.name+(thread.referenceMode==='montage'?' · montaje':thread.referenceMode==='measured'?' · medido':''),i,s,spot;
   for(i=0;i<doc.swatches.length;i++){
    s=doc.swatches[i];
    // Keep PDF and adjusted white swatches separate; never recolor the old one.
-   if((thread.referenceMode==='montage')!==(/ · montaje$/.test(s.name)))continue;
+   if((thread.referenceMode==='montage')!==(/ · montaje$/.test(s.name))||(thread.referenceMode==='measured')!==(/ · medido$/.test(s.name)))continue;
    if(s.name===name||new RegExp('^'+thread.code+'(?:\\s|[·-]|$)').test(s.name)){
     // Never overwrite an unrelated ordinary swatch silently.
     if(s.color.typename!=='SpotColor'||s.color.spot.colorType!==ColorModel.PROCESS)throw Error('Ya existe una muestra con ese código que no es global de proceso. Renómbrala para evitar un conflicto.');
-    if(s.color.tint!==100||T.deltaE2000(T.rgbToLab(T.illustratorColorToRGB(s.color.spot.color)),T.rgbToLab(thread.rgb))>0.5)throw Error('La muestra existente tiene otro color. Renómbrala o corrígela antes de aplicar.');
+    if(s.color.tint!==100||T.deltaE2000(T.rgbToLab(T.illustratorColorToRGB(s.color.spot.color)),T.rgbToLab(T.illustratorColorToRGB(T.threadDocumentColor(doc,thread))))>0.5)throw Error('La muestra existente tiene otro color. Renómbrala o corrígela antes de aplicar.');
     return {color:s.color,created:false,spot:s.color.spot};
    }
   }
   spot=doc.spots.add();
-  try {spot.name=name;spot.colorType=ColorModel.PROCESS;spot.color=T.threadRGBColor(thread);var color=new SpotColor();color.spot=spot;color.tint=100;return {color:color,created:true,spot:spot};}
+  try {spot.name=name;spot.colorType=ColorModel.PROCESS;spot.color=T.threadDocumentColor(doc,thread);var color=new SpotColor();color.spot=spot;color.tint=100;return {color:color,created:true,spot:spot};}
   catch(e){try{spot.remove();}catch(ignore){}throw e;}
  };
  T.applyThread=function(doc,bucket,thread){

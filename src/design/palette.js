@@ -1,0 +1,13 @@
+(function(T){
+ T.createRankCache=function(matcher,maximum){var cache={},order=[],hits=0,misses=0;maximum=maximum||128;return {rank:function(rgb){var key=T.rgbToHex(rgb),result=cache[key];if(result){hits++;for(var n=0;n<order.length;n++)if(order[n]===key){order.splice(n,1);break;}order.push(key);return result;}misses++;result=matcher(rgb,160);cache[key]=result;order.push(key);if(order.length>maximum)delete cache[order.shift()];return result;},stats:function(){return {hits:hits,misses:misses,size:order.length};}};};
+ T.reducePalette=function(groups,assignments,catalog,limit,allowedCodes){
+  if(typeof limit!=='number'||limit<1||Math.floor(limit)!==limit||limit>160)throw Error('El límite debe ser un entero entre 1 y 160.');
+  var colors=catalog.colors,lookup={},eligible=[],chosen=[],chosenMap={},i,j,a,cost,best,bestCost,required=0;
+  for(i=0;i<colors.length;i++){lookup[colors[i].code]=colors[i];if(!allowedCodes||allowedCodes[colors[i].code])eligible.push(colors[i]);}
+  for(i=0;i<assignments.length;i++){a=assignments[i];if(a.exclude||!a.locked)continue;if(!lookup[a.code])throw Error('Falta un hilo fijado.');if(!chosenMap[a.code]){chosen.push(lookup[a.code]);chosenMap[a.code]=true;required++;}}
+  if(required>limit)throw Error('Hay más hilos fijados que el límite elegido.');if(!eligible.length&&groups.length>required)throw Error('No hay hilos disponibles para reducir la paleta.');
+  function total(candidate){var sum=0,k,l,g,d,min;for(k=0;k<groups.length;k++){if(assignments[k].exclude||assignments[k].locked)continue;g=groups[k];min=Infinity;for(l=0;l<chosen.length;l++){d=T.deltaE2000(T.rgbToLab(g.rgb),chosen[l].lab||T.rgbToLab(chosen[l].rgb));if(d<min)min=d;}if(candidate){d=T.deltaE2000(T.rgbToLab(g.rgb),candidate.lab||T.rgbToLab(candidate.rgb));if(d<min)min=d;}sum+=min;}return sum;}
+  while(chosen.length<limit&&total(null)>0){best=null;bestCost=Infinity;for(i=0;i<eligible.length;i++){if(chosenMap[eligible[i].code])continue;cost=total(eligible[i]);if(cost<bestCost){best=eligible[i];bestCost=cost;}}if(!best)break;chosen.push(best);chosenMap[best.code]=true;if(total(null)===0)break;}
+  var result=[];for(i=0;i<groups.length;i++){a=assignments[i];if(a.exclude||a.locked){result.push({hex:groups[i].hex,code:a.code,exclude:!!a.exclude,locked:!!a.locked,reviewed:!!a.reviewed});continue;}best=null;bestCost=Infinity;for(j=0;j<chosen.length;j++){cost=T.deltaE2000(T.rgbToLab(groups[i].rgb),chosen[j].lab||T.rgbToLab(chosen[j].rgb));if(cost<bestCost){best=chosen[j];bestCost=cost;}}if(!best)throw Error('No se pudo proponer una asignación.');result.push({hex:groups[i].hex,code:best.code,locked:false,exclude:false,reviewed:false});}return result;
+ };
+}(ThreadMatch));

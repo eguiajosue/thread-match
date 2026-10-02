@@ -1,4 +1,4 @@
-name: Publish stable version
+name: Publish verified version
 on:
   workflow_run:
     workflows: [Verify and package]
@@ -30,4 +30,6 @@ jobs:
             echo "Release v$VERSION already exists; keeping its files unchanged."
             exit 0
           fi
-          gh release create "v$VERSION" release/* --target "$RELEASE_SHA" --title "ThreadMatch v$VERSION" --notes-file CHANGELOG.md
+          FLAGS=()
+          if [ "$(node -p 'require("./package.json").releaseChannel || "stable"')" = pilot ]; then FLAGS+=(--prerelease); fi
+          gh release create "v$VERSION" release/* --target "$RELEASE_SHA" --title "ThreadMatch v$VERSION" --notes-file CHANGELOG.md "${FLAGS[@]}"

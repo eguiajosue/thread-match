@@ -1,3 +1,15 @@
+# 0.7.0 · piloto
+
+- Modo Diseño: asignaciones revisadas, fijadas/excluidas, reducción a N hilos, aplicación por lote y leyenda de producción.
+- Alcances selección/mesa/documento, revalidación, idempotencia de lotes y recuperación explícita ante cambios/fallos.
+- Caché LRU, deduplicación, sondeo adaptativo, renderizado compartido, timeout y reconexión.
+- Origen visible en todas las pestañas; contexto del documento y referencia de color.
+- Formatos de salida en mm/pt, capa de producción, borde para blancos, copia/actualización explícita de leyenda.
+- Recientes, paletas por cliente, disponibilidad manual, respaldos JSON, tabla CSV y leyenda SVG.
+- Importación de Lab con procedencia; conserva PDF/Montaje sin inventar mediciones físicas.
+- Consulta manual de versiones estables, integridad de archivos e instaladores con restauración de la extensión anterior.
+- Banco nativo de pruebas preparado; validación dentro de Illustrator, PDF directo, firma certificada y UXP siguen pendientes según las dependencias del plan.
+
 # 0.6.0
 
 - Pestaña Favoritos con persistencia local por código y páginas de cinco hilos sin scroll.

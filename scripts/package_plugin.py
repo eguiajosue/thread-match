@@ -4,8 +4,8 @@ import hashlib,json,zipfile
 ROOT=Path(__file__).resolve().parents[1]
 version=json.loads((ROOT/'package.json').read_text())['version']
 source=ROOT/'plugin';out=ROOT/'release';out.mkdir(exist_ok=True)
-shared=['LEEME.md','VALIDACION.md']
-platforms={'Windows':['Install.ps1','Uninstall.ps1','Instalar-ThreadMatch.bat','Desinstalar-ThreadMatch.bat','Desinstalar-y-restaurar-ajustes.bat'],'macOS':['mac-preferences.sh','Instalar-ThreadMatch.command','Desinstalar-ThreadMatch.command','Desinstalar-y-restaurar-ajustes.command']}
+shared=['LEEME.md','VALIDACION.md','INTEGRITY.sha256']
+platforms={'Windows':['Restore-Previous.ps1','Restaurar-version-anterior.bat','Install.ps1','Uninstall.ps1','Instalar-ThreadMatch.bat','Desinstalar-ThreadMatch.bat','Desinstalar-y-restaurar-ajustes.bat'],'macOS':['Restaurar-version-anterior.command','mac-preferences.sh','Instalar-ThreadMatch.command','Desinstalar-ThreadMatch.command','Desinstalar-y-restaurar-ajustes.command']}
 checksums=[]
 for platform,names in platforms.items():
  dest=out/f'ThreadMatch-{platform}-v{version}.zip'

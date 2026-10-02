@@ -41,3 +41,9 @@ Fuentes oficiales: [Adobe CEP Cookbook](https://github.com/Adobe-CEP/CEP-Resourc
 ## Referencia de color
 
 El desplegable superior permite elegir Carta PDF o Montaje. Carta PDF conserva la fotografía original; Montaje aclara tres blancos para el diseño. El resto de los 157 tonos mantiene los valores del PDF. No es calibración física. Las muestras ajustadas terminan en `· montaje` para coexistir con las originales.
+
+## Nuevas opciones · piloto 0.7.0
+
+Hilos > Diseño prepara toda la paleta. Revisa cada asignación antes de Aplicar, Leyenda o ambas. Más (⚙) ofrece alcances, paletas, disponibilidad, JSON, CSV/SVG y recuperación. Más > Versión consulta manualmente Releases; el trabajo diario no requiere conexión.
+
+El instalador verifica `INTEGRITY.sha256` y conserva una versión anterior. Con Illustrator cerrado ejecuta `Restaurar-version-anterior.bat` (Windows) o `bash Restaurar-version-anterior.command` (macOS) para intercambiarlas; conserva opciones y favoritos. Los hashes detectan corrupción, no sustituyen una firma certificada. La validación nativa sigue pendiente.

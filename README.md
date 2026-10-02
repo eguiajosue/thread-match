@@ -2,6 +2,10 @@
 
 Panel acoplable para Adobe Illustrator 2025/2026 que encuentra los hilos Madeira Polystitch No. 40 más cercanos a los colores de un diseño.
 
+## Piloto 0.7.0
+
+Modo Diseño, paletas por lote, leyendas, recientes, paletas guardadas, disponibilidad manual, importación/exportación y diagnóstico. Consulta [cómo usarlo y las limitaciones](docs/IMPLEMENTACION_0.7.md). La [versión piloto](https://github.com/eguiajosue/thread-match/releases/tag/v0.7.0) requiere validación en Illustrator; la última estable sigue en Releases/latest.
+
 ## Descargar e instalar
 
 Descarga el paquete de tu sistema en [GitHub Releases](https://github.com/eguiajosue/thread-match/releases/latest).
@@ -30,7 +34,7 @@ Es una extensión CEP interna sin firma Adobe. Los instaladores habilitan `Playe
 ## Flujo de trabajo
 
 1. Selecciona un trazado, texto completo o grupo con relleno sólido.
-2. El panel sincroniza la selección automáticamente (aproximadamente cada 900 ms).
+2. El panel sincroniza la selección automáticamente (con intervalos adaptativos mientras está visible).
 3. Si hay varios colores, elige uno en el desplegable: sus cinco coincidencias aparecen inmediatamente.
 4. Un clic elige un hilo; **doble clic crea su etiqueta**. También puedes usar Enter con el hilo enfocado.
 5. **Aplicar hilo** crea/reutiliza una muestra global de proceso y recolorea los rellenos correspondientes.
@@ -76,9 +80,9 @@ Este proceso sustituye el dataset digital; conserva una copia de datos calibrado
 
 ## Versiones y distribución
 
-GitHub Actions valida el código, comprueba los instaladores en runners Windows/macOS y genera los paquetes. Una versión nueva en `package.json`, tras aprobar el workflow de verificación en `main`, se publica automáticamente en Releases. Una versión ya publicada permanece intacta: incrementa la versión para publicar nuevos cambios.
+GitHub Actions valida el código, comprueba los instaladores en runners Windows/macOS y genera los paquetes. Una versión nueva en `package.json`, tras aprobar el workflow de verificación en `main`, se publica automáticamente en Releases. `releaseChannel: "pilot"` produce una prerelease y conserva la versión estable. Una versión ya publicada permanece intacta: incrementa la versión para publicar nuevos cambios.
 
-Esto automatiza la publicación, **no la instalación automática dentro de los equipos**. Para actualizar hoy, descarga la nueva Release y ejecuta su instalador con Illustrator cerrado. No hay credenciales GitHub embebidas ni descargas remotas dentro del panel.
+Esto automatiza la publicación, **no la instalación automática dentro de los equipos**. Para actualizar hoy, descarga la nueva Release y ejecuta su instalador con Illustrator cerrado. Más > Versión consulta manualmente la última estable y abre su descarga; no hay credenciales GitHub embebidas ni instalación remota durante una sesión. Los instaladores conservan la extensión anterior para restaurarla.
 
 ## Validación
 

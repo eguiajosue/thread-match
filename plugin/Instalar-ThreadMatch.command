@@ -7,6 +7,8 @@ if pgrep -f 'Adobe Illustrator.*\.app/Contents/MacOS' >/dev/null; then
 fi
 source_dir="$here/com.threadmatch.illustrator"
 [ -f "$source_dir/CSXS/manifest.xml" ] || { echo 'Extrae el ZIP completo antes de instalar.' >&2; exit 1; }
+[ -f "$here/INTEGRITY.sha256" ] || { echo 'Falta INTEGRITY.sha256.' >&2; exit 1; }
+(cd "$here" && shasum -a 256 -c INTEGRITY.sha256) || { echo 'Paquete incompleto o corrupto.' >&2; exit 1; }
 extensions="$HOME/Library/Application Support/Adobe/CEP/extensions"
 state_root="$HOME/Library/Application Support/ThreadMatch"
 target="$extensions/com.threadmatch.illustrator"
@@ -25,7 +27,7 @@ cleanup() {
   if [ -d "$transaction" ]; then restore_preferences "$transaction" no || true; fi
  fi
  rm -rf "$stage" "$transaction"
- if [ "$committed" = yes ]; then rm -rf "$previous"; fi
+ if [ "$committed" = yes ] && [ "$moved" = yes ]; then rm -rf "$state_root/previous-extension"; mv "$previous" "$state_root/previous-extension"; fi
  exit "$rc"
 }
 trap cleanup EXIT
