@@ -1,0 +1,7 @@
+node_modules/
+release/
+*.zip
+sources/*.pdf
+docs/*.png
+.DS_Store
+Thumbs.db
