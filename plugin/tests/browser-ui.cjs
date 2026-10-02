@@ -19,6 +19,17 @@ for(const size of [{width:300,height:420},{width:340,height:480}]){
  await page.fill('#search-query','BLACK');assert.ok(await page.locator('#catalog-results .match').count()>0);await noScroll();
  await page.fill('#search-query','no-such-thread');assert.equal(await page.locator('#catalog-results .match').count(),0);assert.ok((await page.locator('#catalog-results').textContent()).includes('No hay hilos'));
  await page.fill('#search-query','');await noScroll();await page.screenshot({path:path.join(screens,'search-'+size.width+'.png')});
+ await page.fill('#search-query','5801');await page.locator('#catalog-results .match').click();
+ assert.equal(await page.locator('#preview-code').textContent(),'#5801');
+ assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(195, 194, 205)');
+ await page.selectOption('#reference','montage');await page.waitForFunction(()=>uiCalls.some(s=>s==='ThreadMatchCEP.scan("montage")'));
+ await page.waitForFunction(()=>!document.querySelector('#search-label').disabled);
+ assert.equal(await page.locator('#catalog-results .chip').evaluate(el=>el.style.backgroundColor),'rgb(255, 255, 255)');
+ assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(255, 255, 255)');await noScroll();
+ await page.screenshot({path:path.join(screens,'white-montage-'+size.width+'.png')});
+ await page.click('#tab-label');await noScroll();await page.screenshot({path:path.join(screens,'white-label-'+size.width+'.png')});
+ await page.selectOption('#reference','pdf');await page.waitForFunction(()=>!document.querySelector('#label-preview-create').disabled);
+ assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(195, 194, 205)');await noScroll();
  assert.equal(errors.length,0);await page.close();
 }
-await browser.close();console.log('Browser UI checks passed: no scroll, double click, color change, automatic selection.');})().catch(e=>{console.error(e);process.exit(1);});
+await browser.close();console.log('Browser UI checks passed: no scroll, double click, color change, automatic selection, PDF/montage whites.');})().catch(e=>{console.error(e);process.exit(1);});

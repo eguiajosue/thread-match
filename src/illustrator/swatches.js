@@ -1,9 +1,11 @@
 (function(T){
  T.threadRGBColor=function(thread){var c=new RGBColor();c.red=thread.rgb.r;c.green=thread.rgb.g;c.blue=thread.rgb.b;return c;};
  T.getThreadSwatch=function(doc,thread){
-  var name=thread.code+' · '+thread.name,i,s,spot;
+  var name=thread.code+' · '+thread.name+(thread.referenceMode==='montage'?' · montaje':''),i,s,spot;
   for(i=0;i<doc.swatches.length;i++){
    s=doc.swatches[i];
+   // Keep PDF and adjusted white swatches separate; never recolor the old one.
+   if((thread.referenceMode==='montage')!==(/ · montaje$/.test(s.name)))continue;
    if(s.name===name||new RegExp('^'+thread.code+'(?:\\s|[·-]|$)').test(s.name)){
     // Never overwrite an unrelated ordinary swatch silently.
     if(s.color.typename!=='SpotColor'||s.color.spot.colorType!==ColorModel.PROCESS)throw Error('Ya existe una muestra con ese código que no es global de proceso. Renómbrala para evitar un conflicto.');

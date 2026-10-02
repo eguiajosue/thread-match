@@ -40,7 +40,7 @@ El panel permanece abierto. Desactiva Auto para trabajar con actualización manu
 ## Interfaz y etiquetas
 
 - Cinco resultados visibles, sin scroll, a partir de 300 × 420 px.
-- Dos pestañas compactas: Hilos y Etiqueta; vista previa fuera de la lista de resultados.
+- Tres pestañas compactas: Hilos, Buscar y Etiqueta; vista previa fuera de la lista de resultados.
 - Botones inferiores accesibles, navegación por teclado y mensajes con detalles en su tooltip.
 - Tarjeta vectorial editable: muestra amplia, nombre negro en negrita, código `#5990` y colección en gris.
 - Las etiquetas nuevas se desplazan a la derecha si se cruzan con tarjetas ThreadMatch existentes. No se reutilizan ni borran etiquetas anteriores.
@@ -48,6 +48,8 @@ El panel permanece abierto. Desactiva Auto para trabajar con actualización manu
 ## Precisión y soporte
 
 160 hilos extraídos del PDF proporcionado, con códigos/nombres conservados y ligaduras tipográficas normalizadas. Los valores RGB, HEX y Lab son referencias digitales, **no mediciones oficiales del hilo físico**. Verifica con la carta física antes de producir; especialmente fluorescentes, blancos y texturas.
+
+El selector superior ofrece **Carta PDF** (predeterminado, fiel a las fotografías) y **Montaje** (aclara únicamente 5801, 5802 y 5803). Este ajuste visual afecta al ranking, búsqueda, vista previa, etiquetas y aplicación; no es calibración del hilo físico. Las muestras ajustadas tienen sufijo `· montaje` y coexisten con las originales. Consulta la [auditoría de los 160 colores](docs/COLOR_AUDIT.md) y la [comparación de blancos](docs/white-reference-comparison.svg).
 
 El motor usa sRGB, Lab D65 y CIEDE2000. Trabaja en sRGB para esta versión. CMYK se convierte con Illustrator y depende de sus perfiles; gris se normaliza a RGB. Se soportan rellenos sólidos de trazados, compuestos, grupos, textos completos y muestras globales de proceso. No se analizan imágenes, degradados, patrones, mallas, trazos ni efectos de apariencia.
 

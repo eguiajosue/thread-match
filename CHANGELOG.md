@@ -1,3 +1,11 @@
+# 0.5.0
+
+- Auditoría de los 160 colores: códigos, nombres, regiones, ICC, reproducción exacta y comparación independiente con Poppler.
+- Selector Carta PDF / Montaje: conserva los originales y añade blancos ajustados visualmente para 5801, 5802 y 5803.
+- Coincidencias, búsqueda, etiquetas y rellenos usan la misma referencia.
+- Muestras ajustadas separadas para conservar trabajos anteriores.
+- Informe, CSV de 160 hilos y política reproducible incluidos en el repositorio.
+
 # 0.4.0
 
 - Pestaña Buscar: catálogo completo de 160 hilos por código o nombre, con paginación sin scroll.

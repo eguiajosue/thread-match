@@ -1,0 +1,17 @@
+{
+  "pdf": {
+    "label": "Carta PDF",
+    "description": "Medianas sRGB de las fotografías; conserva sombras, brillo y dominante de la carta digital."
+  },
+  "montage": {
+    "label": "Montaje",
+    "anchorCode": "5801",
+    "adjustedCodes": [
+      "5801",
+      "5802",
+      "5803"
+    ],
+    "method": "linear sRGB per-channel division by photographed 5801 white; clip to [0,1]; encode sRGB 8-bit",
+    "description": "Ajuste visual de tres blancos, suponiendo 5801 como blanco neutro D65. No es una medición del hilo físico ni una simulación de fluorescencia. Los otros 157 tonos conservan la referencia PDF."
+  }
+}

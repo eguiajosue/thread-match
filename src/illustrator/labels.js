@@ -20,7 +20,7 @@
    f.position=[left+cfg.padding,y];return f;
   }
   try{
-   group=doc.groupItems.add();group.name='ThreadMatch '+thread.code+' · '+thread.name;
+   group=doc.groupItems.add();group.name='ThreadMatch '+thread.code+' · '+thread.name+(thread.referenceMode==='montage'?' · montaje':'');
    rectangle(top,left,cfg.width,height,color(255,255,255));
    var swatch=rectangle(top-cfg.padding,left+cfg.padding,inner,cfg.swatchHeight,T.threadRGBColor(thread));swatch.name='Muestra '+thread.code;
    var nameY=top-cfg.padding-cfg.swatchHeight-cfg.gap;

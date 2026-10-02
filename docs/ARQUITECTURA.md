@@ -71,3 +71,9 @@ Para valores físicos: conservar código/nombre, registrar instrumento, iluminan
 | 8. Avanzadas | Favoritos, recientes, historial, filtros, editor de perfiles y panel pendientes |
 
 Siguiente gate: completar validación nativa de la versión 0.1.2 antes de ampliar funciones. Fase posterior: reemplazo masivo con revisión por color; después persistencia de preferencias y calibración, manteniendo el motor portable.
+
+## Referencias y auditoría 0.5.0
+
+`color/references.js` deriva el catálogo de montaje de los RGB originales y de `data/reference-policy.json`, sin mutar el dataset base. Aclara tres blancos mediante normalización de canales en luz lineal respecto a 5801, asumido neutro. El resto de los hilos permanece igual. El puente CEP reconstruye el matcher e invalida el snapshot al cambiar de referencia. El build genera ambos catálogos del panel desde el mismo motor; las muestras de montaje se distinguen por nombre. El JSX autónomo usa Carta PDF.
+
+La [auditoría completa](COLOR_AUDIT.md) registra 160 reproducciones exactas, contraste entre PyMuPDF y Poppler y variación en nueve zonas por muestra. Estos diagnósticos digitales no cuantifican el error frente al hilo físico.

@@ -30,6 +30,7 @@ for page_index in (1,2,3):
 assert len(colors)==160,len(colors)
 assert len({c['code'] for c in colors})==160
 catalog=dict(schemaVersion=1,brand='Madeira',collection='Polystitch',weight='40',colorSpace='sRGB',whitePoint='D65',source=dict(filename=Path(args.pdf).name,sha256=hashlib.sha256(raw).hexdigest(),calibrated=False),colors=sorted(colors,key=lambda c:c['code']))
+catalog['references']=json.loads((ROOT/'data/reference-policy.json').read_text())
 (ROOT/'data/madeira-polystitch.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n')
 contact=Image.new('RGB',(185*5,88*((len(tiles)+4)//5)), '#dddddd')
 for i,t in enumerate(tiles):contact.paste(t,((i%5)*185,(i//5)*88))

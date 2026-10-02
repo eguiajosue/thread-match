@@ -37,3 +37,7 @@ Las cinco filas se mantienen visibles desde 300 × 420 px. La vista previa está
 Reinicia Illustrator después de instalar. Revisa el mensaje del instalador, versión exacta 29.x/30.x, carpeta CEP y permisos de tu organización. La carga del panel, perfiles CMYK y Undo se deben probar en Illustrator real.
 
 Fuentes oficiales: [Adobe CEP Cookbook](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_12.x/Documentation/CEP%2012%20HTML%20Extension%20Cookbook.md) y [transición CEP/UXP](https://blog.developer.adobe.com/en/publish/2026/09/investing-in-the-future-of-creative-cloud-extensibility-uxp-comes-to-our-flagship-applications). Adobe sitúa la beta de plugins UXP para Illustrator en primavera de 2027 y el retiro de CEP al final de 2029. El motor está separado para facilitar una migración futura.
+
+## Referencia de color
+
+El desplegable superior permite elegir Carta PDF o Montaje. Carta PDF conserva la fotografía original; Montaje aclara tres blancos para el diseño. El resto de los 157 tonos mantiene los valores del PDF. No es calibración física. Las muestras ajustadas terminan en `· montaje` para coexistir con las originales.
