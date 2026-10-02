@@ -1,1 +1,1 @@
-window.ThreadMatchVersion={"version":"0.7.0","channel":"pilot","nativeValidated":false};
+window.ThreadMatchVersion={"version":"0.7.1","channel":"pilot","nativeValidated":false};

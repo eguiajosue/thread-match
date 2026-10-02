@@ -25,7 +25,7 @@ Esta entrega aplica los incrementos A–G que pueden implementarse sin Illustrat
 
 Se vuelven a leer documento, raíces, rellenos, compuestos, límites y mesa activa antes de modificar. Se preparan muestras antes de las escrituras. Un fallo intenta restaurar en orden inverso; si quedan pasos pendientes, se conserva la recuperación y se bloquean nuevas escrituras. Las escrituras no son una transacción nativa ni se promete un único Ctrl+Z. Un timeout no cancela Illustrator: obliga a obtener respuesta de `health` y releer el documento.
 
-La recuperación se guarda solo en memoria del host; no persiste después de cerrar Illustrator o recargar la extensión. Se detiene ante cambios de relleno posteriores o cambios detectados en la salida. La comparación de salida cubre geometría, texto y rellenos directos; no constituye una detección exhaustiva de toda apariencia/efecto posible. La actualización de leyenda oculta la anterior y conserva una copia en el documento para restauración; evita crear versiones ocultas indefinidamente en trabajos largos.
+La recuperación se guarda solo en memoria del host; no persiste después de cerrar Illustrator o recargar la extensión. Las muestras creadas se conservan si siguen usadas en otros objetos, trazos o texto, o si su uso no puede verificarse. Se detiene ante cambios de relleno posteriores o cambios detectados en la salida. La comparación de salida cubre geometría, texto y rellenos directos; no constituye una detección exhaustiva de toda apariencia/efecto posible. La actualización de leyenda oculta la anterior y conserva una copia en el documento para restauración; evita crear versiones ocultas indefinidamente en trabajos largos.
 
 ## Referencia Lab importable
 

@@ -1,3 +1,8 @@
+# 0.7.1 · piloto
+
+- Recuperación conserva muestras globales que se hayan reutilizado fuera de los objetos originales. No elimina una muestra cuyo uso no pueda comprobarse.
+- Añade una prueba de reutilización posterior y muestra el número de muestras conservadas.
+
 # 0.7.0 · piloto
 
 - Modo Diseño: asignaciones revisadas, fijadas/excluidas, reducción a N hilos, aplicación por lote y leyenda de producción.
