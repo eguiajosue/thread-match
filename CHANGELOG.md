@@ -1,3 +1,9 @@
+# 0.7.2 · piloto
+
+- Mantiene bloqueadas las nuevas escrituras si una recuperación manual termina parcialmente, hasta completar los pasos pendientes.
+- El banco nativo registra la versión real del host cargado.
+- La publicación omite commits sustituidos por otros cambios en main.
+
 # 0.7.1 · piloto
 
 - Recuperación conserva muestras globales que se hayan reutilizado fuera de los objetos originales. No elimina una muestra cuyo uso no pueda comprobarse.

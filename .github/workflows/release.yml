@@ -25,6 +25,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
+          LATEST_SHA="$(gh api repos/eguiajosue/thread-match/git/ref/heads/main --jq .object.sha)"
+          if [ "$LATEST_SHA" != "$RELEASE_SHA" ]; then
+            echo "Skipping superseded commit; the latest main revision must pass verification."
+            exit 0
+          fi
           VERSION="$(node -p 'require("./package.json").version')"
           if gh release view "v$VERSION" >/dev/null 2>&1; then
             echo "Release v$VERSION already exists; keeping its files unchanged."
