@@ -1,3 +1,7 @@
+# 0.7.3 · piloto
+
+- Los botones de importación/exportación esperan la respuesta del puente CEP, evitando perder acciones durante una lectura automática.
+
 # 0.7.2 · piloto
 
 - Mantiene bloqueadas las nuevas escrituras si una recuperación manual termina parcialmente, hasta completar los pasos pendientes.

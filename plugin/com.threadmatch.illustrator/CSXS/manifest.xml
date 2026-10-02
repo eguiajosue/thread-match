@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="7.0" ExtensionBundleId="com.threadmatch.illustrator" ExtensionBundleVersion="0.7.2" ExtensionBundleName="ThreadMatch">
- <ExtensionList><Extension Id="com.threadmatch.illustrator.panel" Version="0.7.2"/></ExtensionList>
+<ExtensionManifest Version="7.0" ExtensionBundleId="com.threadmatch.illustrator" ExtensionBundleVersion="0.7.3" ExtensionBundleName="ThreadMatch">
+ <ExtensionList><Extension Id="com.threadmatch.illustrator.panel" Version="0.7.3"/></ExtensionList>
  <ExecutionEnvironment>
   <HostList><Host Name="ILST" Version="[29.0,30.9]"/></HostList>
   <LocaleList><Locale Code="All"/></LocaleList>
