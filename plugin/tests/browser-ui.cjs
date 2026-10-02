@@ -54,7 +54,7 @@ for(const size of [{width:300,height:420},{width:340,height:480}]){
 
  await page.click('#tab-threads');await page.selectOption('#view','design');await noScroll();
  assert.equal(await page.locator('#design-results .assignment').count(),2);assert.equal(await page.locator('#batch-apply').isDisabled(),true);
- await page.locator('#design-results .assignment').first().click();assert.equal(await page.locator('#search-panel').isVisible(),true);
+ await page.waitForFunction(()=>!document.querySelector('#scan').disabled);await page.locator('#design-results .assignment').first().click();assert.equal(await page.locator('#search-panel').isVisible(),true);
  await page.fill('#search-query','5800');await page.locator('#catalog-results .match').click();await page.click('#tab-threads');
  assert.ok((await page.locator('#design-results').textContent()).includes('5800'));await page.click('#review-all');assert.equal(await page.locator('#batch-apply').isDisabled(),false);
  await page.screenshot({path:path.join(screens,'design-'+size.width+'.png')});
