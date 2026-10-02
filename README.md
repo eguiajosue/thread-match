@@ -40,7 +40,7 @@ El panel permanece abierto. Desactiva Auto para trabajar con actualización manu
 ## Interfaz y etiquetas
 
 - Cinco resultados visibles, sin scroll, a partir de 300 × 420 px.
-- Tres pestañas compactas: Hilos, Buscar y Etiqueta; vista previa fuera de la lista de resultados.
+- Cuatro pestañas compactas: Hilos, Buscar, Favoritos y Etiqueta; vista previa fuera de la lista de resultados.
 - Botones inferiores accesibles, navegación por teclado y mensajes con detalles en su tooltip.
 - Tarjeta vectorial editable: muestra amplia, nombre negro en negrita, código `#5990` y colección en gris.
 - Las etiquetas nuevas se desplazan a la derecha si se cruzan con tarjetas ThreadMatch existentes. No se reutilizan ni borran etiquetas anteriores.
@@ -89,3 +89,7 @@ Uso interno. No es un producto oficial de Adobe o Madeira. El catálogo y las ma
 ### Buscar un hilo específico
 
 En la pestaña **Buscar**, escribe el código (con o sin #) o parte del nombre. El catálogo completo se muestra en páginas de cinco hilos. Selecciona cualquiera para aplicarlo o haz doble clic para crear su etiqueta, aunque no sea una coincidencia sugerida. Selecciona un objeto con relleno sólido en Illustrator para habilitar las acciones. La elección manual se conserva mientras se sincroniza el diseño.
+
+### Favoritos
+
+Marca la estrella ☆ de un hilo en Hilos o Buscar para guardarlo. La pestaña **Favoritos** muestra los hilos guardados en páginas de cinco; permite elegirlos, aplicarlos o crear su etiqueta con doble clic o Enter. Pulsa ★ para quitar un favorito. Se guardan por código en este equipo y se conservan al cerrar el panel. Al cambiar entre Carta PDF y Montaje, se mantiene la lista y se muestran los colores de la referencia activa. No hay sincronización entre equipos. Si el almacenamiento local no está disponible, el panel avisa que los cambios durarán solo durante la sesión.

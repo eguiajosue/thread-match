@@ -1,3 +1,10 @@
+# 0.6.0
+
+- Pestaña Favoritos con persistencia local por código y páginas de cinco hilos sin scroll.
+- Estrellas para añadir y quitar desde coincidencias, búsqueda y favoritos.
+- Aplicar y crear etiquetas desde favoritos con la referencia PDF o Montaje activa.
+- Las estrellas no seleccionan el hilo ni crean etiquetas al hacer doble clic.
+
 # 0.5.0
 
 - Auditoría de los 160 colores: códigos, nombres, regiones, ICC, reproducción exacta y comparación independiente con Poppler.

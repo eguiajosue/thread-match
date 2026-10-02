@@ -30,6 +30,27 @@ for(const size of [{width:300,height:420},{width:340,height:480}]){
  await page.click('#tab-label');await noScroll();await page.screenshot({path:path.join(screens,'white-label-'+size.width+'.png')});
  await page.selectOption('#reference','pdf');await page.waitForFunction(()=>!document.querySelector('#label-preview-create').disabled);
  assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(195, 194, 205)');await noScroll();
+ await page.click('#tab-favorites');assert.ok((await page.locator('#favorite-results').textContent()).includes('Aún no tienes favoritos'));await noScroll();
+ await page.click('#tab-search');await page.fill('#search-query','5801');
+ const labelsBeforeStar=await page.evaluate(()=>uiCalls.filter(s=>s.includes(',"label")')).length);
+ await page.locator('#catalog-results .favorite-star').click();assert.equal(await page.locator('#catalog-results .favorite-star').getAttribute('aria-pressed'),'true');
+ assert.equal(await page.evaluate(()=>uiCalls.filter(s=>s.includes(',"label")')).length),labelsBeforeStar);
+ await page.click('#tab-favorites');assert.equal(await page.locator('#favorite-results .match').count(),1);await noScroll();
+ await page.reload();await page.waitForSelector('#matches .match');await page.click('#tab-favorites');assert.equal(await page.locator('#favorite-results .match').count(),1);
+ await page.locator('#favorite-results .match').dblclick();await page.waitForFunction(()=>uiCalls.some(s=>s.includes(',"5801","label")')));
+ await page.selectOption('#reference','montage');await page.waitForFunction(()=>!document.querySelector('#favorite-label').disabled);
+ assert.equal(await page.locator('#favorite-results .chip').evaluate(el=>el.style.backgroundColor),'rgb(255, 255, 255)');
+ await page.click('#favorite-apply');await page.waitForFunction(()=>uiCalls.some(s=>s.includes(',"5801","apply")')));
+ await page.click('#tab-search');await page.fill('#search-query','');
+ for(let i=0;i<5;i++)await page.locator('#catalog-results .favorite-star').nth(i).click();
+ await page.click('#tab-favorites');assert.equal(await page.locator('#favorite-results .match').count(),5);assert.equal(await page.locator('#favorite-total').textContent(),'6 hilos');await noScroll();
+ await page.screenshot({path:path.join(screens,'favorites-'+size.width+'.png')});
+ await page.click('#favorite-next');assert.equal(await page.locator('#favorite-results .match').count(),1);
+ await page.locator('#favorite-results .favorite-star').click();assert.equal(await page.locator('#favorite-page').textContent(),'1 / 1');assert.equal(await page.locator('#favorite-results .match').count(),5);
+ const beforeStarDouble=await page.evaluate(()=>uiCalls.filter(s=>s.includes(',"label")')).length);
+ await page.click('#tab-search');await page.fill('#search-query','5801');await page.locator('#catalog-results .favorite-star').dblclick();
+ assert.equal(await page.evaluate(()=>uiCalls.filter(s=>s.includes(',"label")')).length),beforeStarDouble);
+ await page.click('#tab-favorites');await noScroll();
  assert.equal(errors.length,0);await page.close();
 }
-await browser.close();console.log('Browser UI checks passed: no scroll, double click, color change, automatic selection, PDF/montage whites.');})().catch(e=>{console.error(e);process.exit(1);});
+await browser.close();console.log('Browser UI checks passed: no scroll, double click, color change, automatic selection, PDF/montage whites, persistent favorites, pagination and star isolation.');})().catch(e=>{console.error(e);process.exit(1);});

@@ -1,4 +1,4 @@
-/* ThreadMatch CEP 0.5.0 */
+/* ThreadMatch CEP 0.6.0 */
 var ThreadMatchCEP=(function(){
 /* ES3-compatible. XYZ normalized 0..1, Lab D65 2-degree observer. */
 var ThreadMatch = typeof ThreadMatch !== 'undefined' ? ThreadMatch : {};
