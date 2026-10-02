@@ -83,3 +83,7 @@ Esto automatiza la publicación, **no la instalación automática dentro de los 
 Pruebas colorimétricas con los 34 pares de referencia Sharma; pruebas de selección, swatches, etiquetas, análisis automático y rechazo de acciones sobre selección/documento antiguos. Los workflows comprueban los instaladores y la interfaz HTML con un puente simulado. Estas pruebas no sustituyen la validación en Illustrator real de carga CEP, fuentes, gestión de color y Ctrl+Z.
 
 Uso interno. No es un producto oficial de Adobe o Madeira. El catálogo y las marcas pertenecen a sus titulares; el repositorio no concede una licencia sobre ellos.
+
+### Buscar un hilo específico
+
+En la pestaña **Buscar**, escribe el código (con o sin #) o parte del nombre. El catálogo completo se muestra en páginas de cinco hilos. Selecciona cualquiera para aplicarlo o haz doble clic para crear su etiqueta, aunque no sea una coincidencia sugerida. Selecciona un objeto con relleno sólido en Illustrator para habilitar las acciones. La elección manual se conserva mientras se sincroniza el diseño.

@@ -1,3 +1,9 @@
+# 0.4.0
+
+- Pestaña Buscar: catálogo completo de 160 hilos por código o nombre, con paginación sin scroll.
+- Selección manual para aplicar o crear etiquetas, incluso fuera de las coincidencias.
+- La elección manual se conserva al sincronizar la selección.
+
 # ThreadMatch v0.3.0
 
 - Panel compacto con dos pestañas, cinco hilos visibles y controles inferiores.

@@ -9,3 +9,5 @@ const catalog=JSON.parse(fs.readFileSync(path.join(root,'data/madeira-polystitch
 const host='/* ThreadMatch CEP '+version+' */\nvar ThreadMatchCEP=(function(){\n'+source+'\nThreadMatch.catalog='+JSON.stringify(catalog)+';\n'+fs.readFileSync(path.join(root,'plugin/bridge.jsx'),'utf8')+'\n}());\n';
 fs.writeFileSync(path.join(root,'plugin/com.threadmatch.illustrator/jsx/host.jsx'),host.replace(/[^\x00-\x7f]/g,c=>'\\u'+c.charCodeAt(0).toString(16).padStart(4,'0')));
 console.log('Built CEP host: '+catalog.colors.length+' colors');
+
+fs.writeFileSync(path.join(root,'plugin/com.threadmatch.illustrator/js/catalog.js'),'window.ThreadMatchCatalog='+JSON.stringify(catalog.colors.map(c=>({code:c.code,name:c.name,hex:c.hex})))+';\n');
