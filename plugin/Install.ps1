@@ -27,7 +27,8 @@ try {
  $installedNew = $true
  if (!(Test-Path $stateFile)) { @{settings=$settings} | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 -Path $stateFile }
  foreach ($setting in $settings) {
-  if (!(Test-Path $setting.key)) { New-Item -Path $setting.key | Out-Null }
+  $registryKey = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey($setting.key.Substring(6))
+  $registryKey.Close()
   New-ItemProperty -Path $setting.key -Name PlayerDebugMode -Value '1' -PropertyType String -Force | Out-Null
  }
  if ($movedPrevious) { Remove-Item -LiteralPath $previous -Recurse -Force }
