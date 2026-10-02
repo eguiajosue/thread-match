@@ -1,0 +1,68 @@
+name: Verify and package
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm run build
+      - run: npm test
+      - run: bash -n plugin/*.command plugin/mac-preferences.sh
+      - run: npm run package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: threadmatch-installers
+          path: release/
+  installers:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test Windows install, upgrade and uninstall
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'ThreadMatch-install-test'
+          ./plugin/Install.ps1
+          ./plugin/Install.ps1
+          if (!(Test-Path "$env:APPDATA/Adobe/CEP/extensions/com.threadmatch.illustrator/CSXS/manifest.xml")) { throw 'Extension not installed' }
+          ./plugin/Uninstall.ps1 -RestoreDebugSettings
+          if (Test-Path "$env:APPDATA/Adobe/CEP/extensions/com.threadmatch.illustrator") { throw 'Uninstall failed' }
+      - name: Test macOS install, upgrade and uninstall
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          bash plugin/Instalar-ThreadMatch.command
+          bash plugin/Instalar-ThreadMatch.command
+          test -f "$HOME/Library/Application Support/Adobe/CEP/extensions/com.threadmatch.illustrator/CSXS/manifest.xml"
+          bash plugin/Desinstalar-ThreadMatch.command --restore-debug
+          test ! -d "$HOME/Library/Application Support/Adobe/CEP/extensions/com.threadmatch.illustrator"
+  interface:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run build
+      - run: npm install --no-save --package-lock=false playwright@1.58.2
+      - run: npx playwright install --with-deps chromium
+      - run: node plugin/tests/browser-ui.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: threadmatch-interface
+          path: ui-test-results/
