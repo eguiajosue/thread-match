@@ -1,4 +1,4 @@
-/* ThreadMatch CEP 0.8.1 */
+/* ThreadMatch CEP 0.8.2 */
 var ThreadMatchCEP=(function(){
 /* ES3-compatible. XYZ normalized 0..1, Lab D65 2-degree observer. */
 var ThreadMatch = typeof ThreadMatch !== 'undefined' ? ThreadMatch : {};
@@ -47,19 +47,20 @@ var ThreadMatch = typeof ThreadMatch !== 'undefined' ? ThreadMatch : {};
  };
  T.catalogForReference=function(catalog,reference){
   reference=reference||'pdf';if(reference!=='pdf'&&reference!=='montage')throw Error('Referencia de color inv\u00e1lida.');
-  if(reference==='pdf')return catalog;
   var policy=catalog.references&&catalog.references.montage,anchor=null,i,j,colors=[],original,c;
-  if(!policy)throw Error('El cat\u00e1logo no incluye la referencia de montaje.');
-  for(i=0;i<catalog.colors.length;i++)if(catalog.colors[i].code===policy.anchorCode)anchor=catalog.colors[i].rgb;
-  if(!anchor)throw Error('Falta la referencia blanca del cat\u00e1logo.');
+  if(reference==='montage'&&!policy)throw Error('El cat\u00e1logo no incluye la referencia de montaje.');
+  for(i=0;i<catalog.colors.length;i++)if(policy&&catalog.colors[i].code===policy.anchorCode)anchor=catalog.colors[i].rgb;
+  if(reference==='montage'&&!anchor)throw Error('Falta la referencia blanca del cat\u00e1logo.');
   for(i=0;i<catalog.colors.length;i++){
    original=catalog.colors[i];c={};for(j in original)if(original.hasOwnProperty(j))c[j]=original[j];
-   for(j=0;j<policy.adjustedCodes.length;j++)if(c.code===policy.adjustedCodes[j]){
+   if(reference==='montage')for(j=0;j<policy.adjustedCodes.length;j++)if(c.code===policy.adjustedCodes[j]){
     c.rgb=T.normalizeWhiteRGB(original.rgb,anchor);c.hex=T.rgbToHex(c.rgb);c.lab=T.rgbToLab(c.rgb);c.referenceMode='montage';break;
    }
+   // Explicit user value applies to both digital references; keep PDF audit intact.
+   if(c.code==='5801'){c.rgb={r:249,g:249,b:249};c.hex='#F9F9F9';c.lab=T.rgbToLab(c.rgb);c.colorOverride=c.hex;}
    colors.push(c);
   }
-  return {schemaVersion:catalog.schemaVersion,colorSpace:catalog.colorSpace,whitePoint:catalog.whitePoint,colors:colors};
+  var result={};for(j in catalog)if(catalog.hasOwnProperty(j))result[j]=catalog[j];result.colors=colors;return result;
  };
 }(ThreadMatch));
 
@@ -132,11 +133,12 @@ var ThreadMatch = typeof ThreadMatch !== 'undefined' ? ThreadMatch : {};
  T.threadRGBColor=function(thread){var c=new RGBColor();c.red=thread.rgb.r;c.green=thread.rgb.g;c.blue=thread.rgb.b;return c;};
  T.threadDocumentColor=function(doc,thread){var rgb=T.threadRGBColor(thread);if(typeof DocumentColorSpace!=='undefined'&&doc.documentColorSpace===DocumentColorSpace.CMYK){var v=app.convertSampleColor(ImageColorSpace.RGB,[thread.rgb.r,thread.rgb.g,thread.rgb.b],ImageColorSpace.CMYK,ColorConvertPurpose.defaultpurpose),c=new CMYKColor();c.cyan=v[0];c.magenta=v[1];c.yellow=v[2];c.black=v[3];return c;}return rgb;};
  T.getThreadSwatch=function(doc,thread){
-  var name=thread.code+' \u00b7 '+thread.name+(thread.referenceMode==='montage'?' \u00b7 montaje':thread.referenceMode==='measured'?' \u00b7 medido':''),i,s,spot;
+  var name=thread.code+' \u00b7 '+thread.name+(thread.colorOverride?' \u00b7 '+thread.colorOverride:'')+(thread.referenceMode==='montage'?' \u00b7 montaje':thread.referenceMode==='measured'?' \u00b7 medido':''),i,s,spot;
   for(i=0;i<doc.swatches.length;i++){
    s=doc.swatches[i];
    // Keep PDF and adjusted white swatches separate; never recolor the old one.
    if((thread.referenceMode==='montage')!==(/ \u00b7 montaje$/.test(s.name))||(thread.referenceMode==='measured')!==(/ \u00b7 medido$/.test(s.name)))continue;
+   if(thread.colorOverride&&s.name.indexOf(' \u00b7 '+thread.colorOverride)===-1)continue;
    if(s.name===name||new RegExp('^'+thread.code+'(?:\\s|[\u00b7-]|$)').test(s.name)){
     // Never overwrite an unrelated ordinary swatch silently.
     if(s.color.typename!=='SpotColor'||s.color.spot.colorType!==ColorModel.PROCESS)throw Error('Ya existe una muestra con ese c\u00f3digo que no es global de proceso. Ren\u00f3mbrala para evitar un conflicto.');

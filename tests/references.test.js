@@ -10,13 +10,24 @@ test('Montage adjusts exactly three whites without changing PDF data or other co
  const before=JSON.stringify(T.catalog),adjusted=T.catalogForReference(T.catalog,'montage');
  const changed=adjusted.colors.filter((c,i)=>c.hex!==T.catalog.colors[i].hex);
  assert.deepEqual(changed.map(c=>c.code),['5801','5802','5803']);
- assert.equal(changed.find(c=>c.code==='5801').hex,'#FFFFFF');
+ assert.equal(changed.find(c=>c.code==='5801').hex,'#F9F9F9');
  for(const c of changed){assert.ok(Math.min(c.rgb.r,c.rgb.g,c.rgb.b)>230);assert.equal(c.referenceMode,'montage');assert.equal(c.hex,T.rgbToHex(c.rgb));assert.deepEqual(c.lab,T.rgbToLab(c.rgb));}
- assert.equal(JSON.stringify(T.catalog),before);assert.equal(T.catalogForReference(T.catalog,'pdf'),T.catalog);
+ assert.equal(JSON.stringify(T.catalog),before);assert.equal(T.catalogForReference(T.catalog,'pdf').colors.find(c=>c.code==='5801').hex,'#F9F9F9');
  assert.throws(()=>T.catalogForReference(T.catalog,'invalid'));assert.throws(()=>T.normalizeWhiteRGB({r:255,g:255,b:255},{r:0,g:0,b:0}));
  const match=T.createMatcher(adjusted);for(const c of changed)assert.ok(match(c.rgb,160).some(r=>r.code===c.code&&r.deltaE<1e-10));
 });
 test('Generated panel catalog agrees with host color references for every thread',()=>{
  const ctx={window:{}};vm.createContext(ctx);vm.runInContext(fs.readFileSync(path.join(root,'plugin/com.threadmatch.illustrator/js/catalog.js'),'utf8'),ctx);
  for(const reference of ['pdf','montage']){const host=T.catalogForReference(T.catalog,reference).colors,panel=ctx.window.ThreadMatchCatalog[reference];assert.equal(panel.length,160);for(let i=0;i<160;i++){assert.equal(panel[i].code,host[i].code);assert.equal(panel[i].name,host[i].name);assert.equal(panel[i].hex,host[i].hex);}}
+});
+
+test('5801 user hex is identical in both digital references and default matcher',()=>{
+ const original=JSON.stringify(T.catalog);
+ for(const mode of ['pdf','montage']){
+  const catalog=T.catalogForReference(T.catalog,mode),white=catalog.colors.find(c=>c.code==='5801');
+  assert.deepEqual(white.rgb,{r:249,g:249,b:249});assert.equal(white.hex,'#F9F9F9');assert.deepEqual(white.lab,T.rgbToLab(white.rgb));
+  const match=T.createMatcher(catalog)(white.rgb,1)[0];assert.equal(match.code,'5801');assert.equal(match.deltaE,0);
+  for(const c of catalog.colors)if(c.code!=='5801'&&(mode==='pdf'||!['5802','5803'].includes(c.code)))assert.deepEqual(c.rgb,T.catalog.colors.find(o=>o.code===c.code).rgb);
+ }
+ assert.equal(JSON.stringify(T.catalog),original);assert.equal(T.findClosestMadeiraColors({r:249,g:249,b:249},1)[0].deltaE,0);
 });

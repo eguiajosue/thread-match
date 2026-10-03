@@ -46,15 +46,15 @@ for(const size of [{width:300,height:420},{width:340,height:480}]){
  await page.fill('#search-query','');await noScroll();await page.screenshot({path:path.join(screens,'search-'+size.width+'.png')});
  await page.fill('#search-query','5801');await page.locator('#catalog-results .match').click();
  assert.equal(await page.locator('#preview-code').textContent(),'#5801');
- assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(195, 194, 205)');
+ assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(249, 249, 249)');
  await page.selectOption('#reference','montage');await page.waitForFunction(()=>uiCalls.some(s=>s.startsWith('ThreadMatchCEP.scan("montage",')));
  await page.waitForFunction(()=>!document.querySelector('#search-label').disabled);
- assert.equal(await page.locator('#catalog-results .chip').evaluate(el=>el.style.backgroundColor),'rgb(255, 255, 255)');
- assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(255, 255, 255)');assert.equal(await page.locator('#preview-spool').evaluate(el=>el.style.color),'rgb(255, 255, 255)');await noScroll();
+ assert.equal(await page.locator('#catalog-results .chip').evaluate(el=>el.style.backgroundColor),'rgb(249, 249, 249)');
+ assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(249, 249, 249)');assert.equal(await page.locator('#preview-spool').evaluate(el=>el.style.color),'rgb(249, 249, 249)');await noScroll();
  await page.screenshot({path:path.join(screens,'white-montage-'+size.width+'.png')});
  await page.click('#tab-label');await noScroll();await page.screenshot({path:path.join(screens,'white-label-'+size.width+'.png')});
  await page.selectOption('#reference','pdf');await page.waitForFunction(()=>!document.querySelector('#label-preview-create').disabled);
- assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(195, 194, 205)');await noScroll();
+ assert.equal(await page.locator('#preview-chip').evaluate(el=>el.style.backgroundColor),'rgb(249, 249, 249)');await noScroll();
  await page.click('#tab-favorites');assert.ok((await page.locator('#favorite-results').textContent()).includes('Aún no tienes favoritos'));await noScroll();
  await page.click('#tab-search');await page.fill('#search-query','5801');
  const labelsBeforeStar=await page.evaluate(()=>uiCalls.filter(s=>/,"label"(?:,|\))/.test(s)).length);
@@ -64,7 +64,7 @@ for(const size of [{width:300,height:420},{width:340,height:480}]){
  await page.reload();await page.waitForSelector('#matches .match');await page.click('#tab-favorites');assert.equal(await page.locator('#favorite-results .match').count(),1);
  await page.locator('#favorite-results .match').dblclick();await page.waitForFunction(()=>uiCalls.some(s=>s.includes(',"5801","label"')));
  await page.selectOption('#reference','montage');await page.waitForFunction(()=>!document.querySelector('#favorite-label').disabled);
- assert.equal(await page.locator('#favorite-results .chip').evaluate(el=>el.style.backgroundColor),'rgb(255, 255, 255)');
+ assert.equal(await page.locator('#favorite-results .chip').evaluate(el=>el.style.backgroundColor),'rgb(249, 249, 249)');
  await page.click('#favorite-apply');await page.waitForFunction(()=>uiCalls.some(s=>s.includes(',"5801","apply"')));
  await page.click('#tab-search');await page.fill('#search-query','');
  for(let i=0;i<5;i++)await page.locator('#catalog-results .favorite-star').nth(i).click();

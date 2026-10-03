@@ -13,4 +13,4 @@ const jsx='#target illustrator\n/* ThreadMatch '+version+' - bundled ES3; no ext
 fs.writeFileSync(path.join(root,'dist/ThreadMatch.jsx'),jsx.replace(/[^\x00-\x7F]/g,c=>'\\u'+c.charCodeAt(0).toString(16).padStart(4,'0')));
 console.log('Built dist/ThreadMatch.jsx: '+cat.colors.length+' colors');
 
-fs.writeFileSync(path.join(root,'dist/threadmatch-core.js'),core+'\nThreadMatch.catalog='+JSON.stringify(cat)+';\nThreadMatch.findClosestMadeiraColors=ThreadMatch.createMatcher(ThreadMatch.catalog);\nif(typeof module!==\"undefined\" && module.exports)module.exports=ThreadMatch;\n');
+fs.writeFileSync(path.join(root,'dist/threadmatch-core.js'),core+'\nThreadMatch.catalog='+JSON.stringify(cat)+';\nThreadMatch.findClosestMadeiraColors=ThreadMatch.createMatcher(ThreadMatch.catalogForReference(ThreadMatch.catalog,"pdf"));\nif(typeof module!==\"undefined\" && module.exports)module.exports=ThreadMatch;\n');

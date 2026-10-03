@@ -1,3 +1,10 @@
+# 0.8.2 · piloto
+
+- El hilo 5801 usa #F9F9F9 (RGB 249, 249, 249) en ambas referencias digitales del plugin y el JSX.
+- Actualiza ranking, búsqueda, favoritos, vista previa, etiquetas, leyendas y aplicación; recalcula Lab desde el RGB indicado.
+- Crea una muestra diferenciada para este valor, sin modificar las muestras 5801 de documentos anteriores.
+- Conserva los datos de extracción del PDF para auditoría y los valores de los otros hilos. Las cartas Wilcom exportadas anteriormente no cambian.
+
 # 0.8.1 · piloto
 
 - Etiquetas y leyendas salen del modo de aislamiento antes de crear la capa de producción, conservando los objetos seleccionados; contempla aislamiento anidado y el error de capa sintética.

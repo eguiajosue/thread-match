@@ -10,7 +10,7 @@ try {
  if(!app.documents.length)throw Error('Abre un documento de Illustrator antes de ejecutar ThreadMatch.');
  var doc=app.activeDocument;
  ThreadMatch.stage='Cargar catálogo';
- var matcher=ThreadMatch.createMatcher(ThreadMatch.catalog);
+ var matcher=ThreadMatch.createMatcher(ThreadMatch.catalogForReference(ThreadMatch.catalog,'pdf'));
  ThreadMatch.stage='Leer selección';
  var analysis=ThreadMatch.collectSelection(doc);
  var choice=ThreadMatch.showMatcherDialog(analysis,matcher);

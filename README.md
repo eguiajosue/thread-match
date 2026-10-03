@@ -2,9 +2,9 @@
 
 Panel acoplable para Adobe Illustrator 2025/2026 que encuentra los hilos Madeira Polystitch No. 40 más cercanos a los colores de un diseño.
 
-## Piloto 0.8.1
+## Piloto 0.8.2
 
-Modo Diseño, paletas por lote, leyendas, recientes, paletas guardadas, disponibilidad manual, importación/exportación y diagnóstico. Consulta [cómo usarlo y las limitaciones](docs/IMPLEMENTACION_0.7.md). La [versión piloto](https://github.com/eguiajosue/thread-match/releases/tag/v0.8.1) requiere validación en Illustrator; la última estable sigue en Releases/latest.
+Modo Diseño, paletas por lote, leyendas, recientes, paletas guardadas, disponibilidad manual, importación/exportación y diagnóstico. Consulta [cómo usarlo y las limitaciones](docs/IMPLEMENTACION_0.7.md). La [versión piloto](https://github.com/eguiajosue/thread-match/releases/tag/v0.8.2) requiere validación en Illustrator; la última estable sigue en Releases/latest.
 
 ## Descargar e instalar
 
@@ -53,7 +53,7 @@ El panel permanece abierto. Desactiva Auto para trabajar con actualización manu
 
 160 hilos extraídos del PDF proporcionado, con códigos/nombres conservados y ligaduras tipográficas normalizadas. Los valores RGB, HEX y Lab son referencias digitales, **no mediciones oficiales del hilo físico**. Verifica con la carta física antes de producir; especialmente fluorescentes, blancos y texturas.
 
-El selector superior ofrece **Carta PDF** (predeterminado, fiel a las fotografías) y **Montaje** (aclara únicamente 5801, 5802 y 5803). Este ajuste visual afecta al ranking, búsqueda, vista previa, etiquetas y aplicación; no es calibración del hilo físico. Las muestras ajustadas tienen sufijo `· montaje` y coexisten con las originales. Consulta la [auditoría de los 160 colores](docs/COLOR_AUDIT.md) y la [comparación de blancos](docs/white-reference-comparison.svg).
+El selector superior ofrece **Carta PDF** (predeterminado, referencia fotográfica) y **Montaje** (aclara únicamente 5801, 5802 y 5803). En ambas referencias digitales, 5801 usa **#F9F9F9** por indicación del usuario. Este ajuste visual afecta al ranking, búsqueda, vista previa, etiquetas y aplicación; no es calibración del hilo físico. Las muestras ajustadas tienen sufijo `· montaje` y coexisten con las originales. Consulta la [auditoría de los 160 colores](docs/COLOR_AUDIT.md) y la [comparación de blancos](docs/white-reference-comparison.svg).
 
 El motor usa sRGB, Lab D65 y CIEDE2000. Trabaja en sRGB para esta versión. CMYK se convierte con Illustrator y depende de sus perfiles; gris se normaliza a RGB. Se soportan rellenos sólidos de trazados, compuestos, grupos, textos completos y muestras globales de proceso. No se analizan imágenes, degradados, patrones, mallas, trazos ni efectos de apariencia.
 
